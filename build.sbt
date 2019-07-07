@@ -29,7 +29,7 @@ crossSbtVersions ++= Seq("1.2.8")
 scriptedSettings
 scriptedDependencies := publishLocal.value
 scriptedLaunchOpts ++= Seq("-Xms512m", "-Xmx512m", s"-Dproject.version=${version.value}")
-//scriptedBufferLog := false
+scriptedBufferLog := false
 
 import ReleaseTransformations._
 releaseProcess := Seq[ReleaseStep](
