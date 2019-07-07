@@ -11,7 +11,7 @@ bintrayRepository := "sbt-plugin-releases"
 bintrayPackage := name.value
 bintrayReleaseOnPublish := false
 
-crossSbtVersions := Seq("0.13.16", "1.0.1")
+crossSbtVersions ++= Seq("1.2.8")
 
 scriptedSettings
 scriptedDependencies := publishLocal.value
