@@ -1,9 +1,9 @@
-package com.lightbend.sbt.proguard
+package sbtproguard.proguard
 
 import java.io.File
 import java.util.regex.Pattern
 
-import com.lightbend.sbt.proguard.Sbt10Compat._
+import sbtproguard.proguard.Sbt10Compat._
 import sbt._
 import scala.util.matching.Regex
 import Sbt10Compat.SbtIoPath._

@@ -1,7 +1,7 @@
-package com.lightbend.sbt
+package sbtproguard
 
-import com.lightbend.sbt.proguard.Merge
-import com.lightbend.sbt.proguard.Sbt10Compat._
+import sbtproguard.proguard.Merge
+import sbtproguard.proguard.Sbt10Compat._
 import sbt.Keys._
 import sbt.{Def, _}
 

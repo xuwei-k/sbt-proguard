@@ -3,7 +3,7 @@ sbt-proguard
 
 [sbt] plugin for running [ProGuard]. This plugin requires sbt 0.13 or 1.0.
 
-[![Build Status](https://travis-ci.org/sbt/sbt-proguard.png?branch=master)](https://travis-ci.org/sbt/sbt-proguard)
+[![Build Status](https://travis-ci.org/xuwei-k/sbt-proguard.png?branch=master)](https://travis-ci.org/xuwei-k/sbt-proguard)
 
 
 Add plugin
@@ -12,12 +12,12 @@ Add plugin
 Add plugin to `project/plugins.sbt`. For example:
 
 ```scala
-addSbtPlugin("com.lightbend.sbt" % "sbt-proguard" % "{version}")
+addSbtPlugin("com.github.xuwei-k" % "sbt-proguard" % "{version}")
 ```
 
 See [released versions][releases].
 
-Note: earlier versions of sbt-proguard used the `"com.typesafe.sbt"` organization.
+Note: earlier versions of sbt-proguard used the `"com.lightbend.sbt"` organization.
 
 Example
 -------
@@ -138,15 +138,6 @@ Sample projects
 
 There are some [runnable sample projects][samples] included as sbt scripted tests.
 
-
-Contribution policy
--------------------
-
-Contributions via GitHub pull requests are gladly accepted from their original
-author. Before we can accept pull requests, you will need to agree to the
-[Lightbend Contributor License Agreement][cla] online, using your GitHub account.
-
-
 License
 -------
 
@@ -158,10 +149,9 @@ The code for this sbt plugin is licensed under the [Apache 2.0 License][apache].
 
 [sbt]: https://github.com/sbt/sbt
 [ProGuard]: https://www.guardsquare.com/en/proguard
-[releases]: https://github.com/sbt/sbt-proguard/releases
+[releases]: https://github.com/xuwei-k/sbt-proguard/releases
 [sbt-assembly]: https://github.com/sbt/sbt-assembly
-[samples]: https://github.com/sbt/sbt-proguard/tree/master/src/sbt-test/proguard
-[cla]: https://www.lightbend.com/contribute/cla
+[samples]: https://github.com/xuwei-k/sbt-proguard/tree/master/src/sbt-test/proguard
 [gpl]: http://www.gnu.org/licenses/gpl.html
 [except]: http://proguard.sourceforge.net/GPL_exception.html
 [apache]: http://www.apache.org/licenses/LICENSE-2.0.html

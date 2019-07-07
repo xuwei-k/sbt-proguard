@@ -1,4 +1,4 @@
-package com.lightbend.sbt.proguard
+package sbtproguard.proguard
 
 import sbt.{Def, Task, _}
 import sbt.internal.inc.Analysis

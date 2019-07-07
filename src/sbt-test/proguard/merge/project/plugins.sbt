@@ -1,1 +1,1 @@
-addSbtPlugin("com.lightbend.sbt" % "sbt-proguard" % sys.props("project.version"))
+addSbtPlugin("com.github.xuwei-k" % "sbt-proguard" % sys.props("project.version"))
