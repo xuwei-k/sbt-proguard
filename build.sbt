@@ -1,5 +1,3 @@
-sbtPlugin := true
-
 organization := "com.github.xuwei-k"
 name := "sbt-proguard"
 
@@ -26,9 +24,9 @@ publishTo := sonatypePublishTo.value
 
 // Don't update to sbt 1.3.x
 // https://github.com/sbt/sbt/issues/5049
-crossSbtVersions ++= Seq("1.2.8")
+crossSbtVersions := Seq("1.2.8", "0.13.18")
 
-scriptedSettings
+enablePlugins(SbtPlugin)
 scriptedDependencies := publishLocal.value
 scriptedLaunchOpts ++= Seq("-Xms512m", "-Xmx512m", s"-Dproject.version=${version.value}")
 scriptedBufferLog := false
