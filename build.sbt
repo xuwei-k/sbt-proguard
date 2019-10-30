@@ -20,7 +20,7 @@ pomExtra := {
   </developers>
 }
 
-publishTo := sonatypePublishTo.value
+publishTo := sonatypePublishToBundle.value
 
 // Don't update to sbt 1.3.x
 // https://github.com/sbt/sbt/issues/5049
@@ -40,7 +40,7 @@ releaseProcess := Seq[ReleaseStep](
   commitReleaseVersion,
   tagRelease,
   releaseStepCommandAndRemaining("^ publishSigned"),
-  releaseStepCommand("sonatypeReleaseAll"),
+  releaseStepCommand("sonatypeBundleRelease"),
   setNextVersion,
   commitNextVersion,
   pushChanges
