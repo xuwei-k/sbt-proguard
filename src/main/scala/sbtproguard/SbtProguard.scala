@@ -37,8 +37,12 @@ object SbtProguard extends AutoPlugin {
       val defaultInputFilterValue = proguardDefaultInputFilter.value
       _ => defaultInputFilterValue
     },
-    proguardLibraryFilter := { f => None },
-    proguardOutputFilter := { f => None },
+    proguardLibraryFilter := { f =>
+      None
+    },
+    proguardOutputFilter := { f =>
+      None
+    },
     proguardFilteredInputs := filtered(proguardInputs.value, proguardInputFilter.value),
     proguardFilteredLibraries := filtered(proguardLibraries.value, proguardLibraryFilter.value),
     proguardFilteredOutputs := filtered(proguardOutputs.value, proguardOutputFilter.value),
@@ -100,14 +104,22 @@ object SbtProguard extends AutoPlugin {
   }
 
   def inputFiles(inputs: Seq[Filtered]): Seq[File] =
-    inputs flatMap { i => if (i.file.isDirectory) i.file.allPaths.get else Seq(i.file) }
+    inputs flatMap { i =>
+      if (i.file.isDirectory) i.file.allPaths.get else Seq(i.file)
+    }
 
   def writeConfiguration(config: File, options: Seq[String]): Unit =
     IO.writeLines(config, options)
 
   def runProguard(config: File, javaOptions: Seq[String], classpath: Seq[File], log: Logger): Unit = {
     require(classpath.nonEmpty, "Proguard classpath cannot be empty!")
-    val options = javaOptions ++ Seq("-cp", Path.makeString(classpath), "proguard.ProGuard", "-include", config.getAbsolutePath)
+    val options = javaOptions ++ Seq(
+      "-cp",
+      Path.makeString(classpath),
+      "proguard.ProGuard",
+      "-include",
+      config.getAbsolutePath
+    )
     log.debug("Proguard command:")
     log.debug("java " + options.mkString(" "))
     val exitCode = Process("java", options) ! log

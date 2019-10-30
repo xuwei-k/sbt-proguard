@@ -36,11 +36,15 @@ trait ProguardKeys {
     def noFilter(jars: Seq[File]): Seq[Filtered] = filtered(jars, None)
 
     def filtered(jars: Seq[File], filter: File => Option[String]): Seq[Filtered] = {
-      jars map { jar => Filtered(jar, filter(jar)) }
+      jars map { jar =>
+        Filtered(jar, filter(jar))
+      }
     }
 
     def filtered(jars: Seq[File], filter: Option[String]): Seq[Filtered] = {
-      jars map { jar => Filtered(jar, filter) }
+      jars map { jar =>
+        Filtered(jar, filter)
+      }
     }
 
     def filterString(filter: Option[String]): String = {
@@ -50,7 +54,9 @@ trait ProguardKeys {
     }
 
     def jarOptions(option: String, jars: Seq[Filtered]): Seq[String] = {
-      jars map { jar => "%s \"%s\"%s" format(option, jar.file.getCanonicalPath, filterString(jar.filter)) }
+      jars map { jar =>
+        "%s \"%s\"%s" format (option, jar.file.getCanonicalPath, filterString(jar.filter))
+      }
     }
 
     def keepMain(name: String): String = {
