@@ -1,8 +1,7 @@
 language: scala
 jdk: openjdk8
 script:
-- wget https://raw.githubusercontent.com/paulp/sbt-extras/3b15595bbc0c4ff97325b618322367f02e136a62/sbt && chmod +x ./sbt
-- ./sbt scalafmtSbtCheck scalafmtCheck test:scalafmtCheck "^ scripted"
+- sbt scalafmtSbtCheck scalafmtCheck test:scalafmtCheck "^ scripted"
 cache:
   directories:
   - $HOME/.ivy2/cache
@@ -19,3 +18,6 @@ matrix:
     before_script:
     - wget https://raw.githubusercontent.com/DanySK/Gravis-CI/c8f400623d8f756ef7c/.install-jdk-travis.sh
     - source .install-jdk-travis.sh
+    - wget https://raw.githubusercontent.com/paulp/sbt-extras/3b15595bbc0c4ff97325b618322367f02e136a62/sbt && chmod +x ./sbt
+    script:
+    - ./sbt "^ scripted"
