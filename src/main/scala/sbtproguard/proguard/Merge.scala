@@ -9,7 +9,6 @@ import scala.util.matching.Regex
 import Sbt10Compat.SbtIoPath._
 
 object Merge {
-
   object EntryPath {
     val pattern = Pattern.compile(if (File.separator == "\\") "\\\\" else File.separator)
 

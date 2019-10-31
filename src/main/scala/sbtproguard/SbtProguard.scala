@@ -8,7 +8,6 @@ import sbt.{Def, _}
 import scala.sys.process.Process
 
 object SbtProguard extends AutoPlugin {
-
   object autoImport extends ProguardKeys {
     lazy val Proguard: Configuration = config("proguard").hide
   }
