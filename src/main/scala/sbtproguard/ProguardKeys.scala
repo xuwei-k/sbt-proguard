@@ -28,7 +28,6 @@ trait ProguardKeys {
   val proguard = taskKey[Seq[File]]("proguard")
 
   object ProguardOptions {
-
     case class Filtered(file: File, filter: Option[String])
 
     def noFilter(jar: File): Seq[Filtered] = Seq(Filtered(jar, None))
@@ -73,7 +72,6 @@ trait ProguardKeys {
   }
 
   object ProguardMerge {
-
     import Merge.Strategy.{matchingRegex, matchingString}
 
     import scala.util.matching.Regex
@@ -94,5 +92,4 @@ trait ProguardKeys {
     def rename(pattern: Regex) = matchingRegex(pattern, Merge.rename)
     def append(pattern: Regex) = matchingRegex(pattern, Merge.append)
   }
-
 }
