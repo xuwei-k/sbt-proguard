@@ -47,9 +47,7 @@ object Merge {
         IO.unzip(source, unzipped)
         unzipped
       } else source
-      (base.allPaths --- base).get pair relativeTo(base) map { p =>
-        Entry(p._2, p._1, source)
-      }
+      (base.allPaths --- base).get pair relativeTo(base) map { p => Entry(p._2, p._1, source) }
     }
   }
 
@@ -101,9 +99,7 @@ object Merge {
         log.debug("Ignoring duplicate directories at '%s'" format path)
         path.file(target).mkdirs
       } else {
-        entries foreach { e =>
-          log.debug("Matching entry at '%s' from %s" format (e.path, e.source.name))
-        }
+        entries foreach { e => log.debug("Matching entry at '%s' from %s" format (e.path, e.source.name)) }
         val hashes = (entries map {
           _.file.hashString
         }).toSet
@@ -129,16 +125,12 @@ object Merge {
   }
 
   def copyOne(label: String, target: File, log: Option[Logger] = None)(entry: Entry): Unit = {
-    log foreach { l =>
-      l.debug("Keeping %s entry at '%s' from %s" format (label, entry.path, entry.source.name))
-    }
+    log foreach { l => l.debug("Keeping %s entry at '%s' from %s" format (label, entry.path, entry.source.name)) }
     IO.copyFile(entry.file, entry.path.file(target))
   }
 
   def discard(path: EntryPath, entries: Seq[Entry], target: File, log: Logger): Unit = {
-    entries foreach { e =>
-      log.debug("Discarding entry at '%s' from %s" format (e.path, e.source.name))
-    }
+    entries foreach { e => log.debug("Discarding entry at '%s' from %s" format (e.path, e.source.name)) }
   }
 
   def first(path: EntryPath, entries: Seq[Entry], target: File, log: Logger): Unit = {
