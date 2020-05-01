@@ -70,9 +70,10 @@ trait ProguardKeys {
 
     import scala.util.matching.Regex
 
-    def defaultStrategies = Seq(
-      discard("META-INF/MANIFEST.MF")
-    )
+    def defaultStrategies =
+      Seq(
+        discard("META-INF/MANIFEST.MF")
+      )
 
     def discard(exactly: String) = matchingString(exactly, Merge.discard)
     def first(exactly: String) = matchingString(exactly, Merge.first)
