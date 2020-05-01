@@ -64,10 +64,12 @@ object Merge {
     def matchingString(string: String, run: RunMerge): Strategy = create(EntryPath.matches(string), run)
     def matchingRegex(regex: Regex, run: RunMerge): Strategy = create(EntryPath.matches(regex), run)
 
-    def create(claim: EntryPath => Boolean, run: RunMerge): Strategy = new Strategy {
-      def claims(path: EntryPath): Boolean = claim(path)
-      def merge(path: EntryPath, entries: Seq[Entry], target: File, log: Logger): Unit = run(path, entries, target, log)
-    }
+    def create(claim: EntryPath => Boolean, run: RunMerge): Strategy =
+      new Strategy {
+        def claims(path: EntryPath): Boolean = claim(path)
+        def merge(path: EntryPath, entries: Seq[Entry], target: File, log: Logger): Unit =
+          run(path, entries, target, log)
+      }
   }
 
   def merge(sources: Seq[File], target: File, strategies: Seq[Strategy], log: Logger): Unit = {

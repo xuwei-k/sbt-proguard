@@ -21,42 +21,44 @@ object SbtProguard extends AutoPlugin {
 
   override lazy val projectSettings: Seq[Setting[_]] = inConfig(Proguard)(baseSettings) ++ dependencies
 
-  def baseSettings: Seq[Setting[_]] = Seq(
-    proguardVersion := "6.2.0",
-    proguardDirectory := crossTarget.value / "proguard",
-    proguardConfiguration := proguardDirectory.value / "configuration.pro",
-    artifactPath := proguardDirectory.value / (artifactPath in packageBin in Compile).value.getName,
-    managedClasspath := Classpaths.managedJars(configuration.value, classpathTypes.value, update.value),
-    proguardBinaryDeps := getAllBinaryDeps.value,
-    proguardInputs := (fullClasspath in Runtime).value.files,
-    proguardLibraries := proguardBinaryDeps.value filterNot proguardInputs.value.toSet,
-    proguardOutputs := Seq(artifactPath.value),
-    proguardDefaultInputFilter := Some("!META-INF/MANIFEST.MF"),
-    proguardInputFilter := {
-      val defaultInputFilterValue = proguardDefaultInputFilter.value
-      _ => defaultInputFilterValue
-    },
-    proguardLibraryFilter := { f => None },
-    proguardOutputFilter := { f => None },
-    proguardFilteredInputs := filtered(proguardInputs.value, proguardInputFilter.value),
-    proguardFilteredLibraries := filtered(proguardLibraries.value, proguardLibraryFilter.value),
-    proguardFilteredOutputs := filtered(proguardOutputs.value, proguardOutputFilter.value),
-    proguardMerge := false,
-    proguardMergeDirectory := proguardDirectory.value / "merged",
-    proguardMergeStrategies := ProguardMerge.defaultStrategies,
-    proguardMergedInputs := mergeTask.value,
-    proguardOptions := {
-      jarOptions("-injars", proguardMergedInputs.value) ++
-        jarOptions("-libraryjars", proguardFilteredLibraries.value) ++
-        jarOptions("-outjars", proguardFilteredOutputs.value)
-    },
-    javaOptions in proguard := Seq("-Xmx256M"),
-    autoImport.proguard := proguardTask.value
-  )
+  def baseSettings: Seq[Setting[_]] =
+    Seq(
+      proguardVersion := "6.2.0",
+      proguardDirectory := crossTarget.value / "proguard",
+      proguardConfiguration := proguardDirectory.value / "configuration.pro",
+      artifactPath := proguardDirectory.value / (artifactPath in packageBin in Compile).value.getName,
+      managedClasspath := Classpaths.managedJars(configuration.value, classpathTypes.value, update.value),
+      proguardBinaryDeps := getAllBinaryDeps.value,
+      proguardInputs := (fullClasspath in Runtime).value.files,
+      proguardLibraries := proguardBinaryDeps.value filterNot proguardInputs.value.toSet,
+      proguardOutputs := Seq(artifactPath.value),
+      proguardDefaultInputFilter := Some("!META-INF/MANIFEST.MF"),
+      proguardInputFilter := {
+        val defaultInputFilterValue = proguardDefaultInputFilter.value
+        _ => defaultInputFilterValue
+      },
+      proguardLibraryFilter := { f => None },
+      proguardOutputFilter := { f => None },
+      proguardFilteredInputs := filtered(proguardInputs.value, proguardInputFilter.value),
+      proguardFilteredLibraries := filtered(proguardLibraries.value, proguardLibraryFilter.value),
+      proguardFilteredOutputs := filtered(proguardOutputs.value, proguardOutputFilter.value),
+      proguardMerge := false,
+      proguardMergeDirectory := proguardDirectory.value / "merged",
+      proguardMergeStrategies := ProguardMerge.defaultStrategies,
+      proguardMergedInputs := mergeTask.value,
+      proguardOptions := {
+        jarOptions("-injars", proguardMergedInputs.value) ++
+          jarOptions("-libraryjars", proguardFilteredLibraries.value) ++
+          jarOptions("-outjars", proguardFilteredOutputs.value)
+      },
+      javaOptions in proguard := Seq("-Xmx256M"),
+      autoImport.proguard := proguardTask.value
+    )
 
-  def dependencies: Seq[Setting[_]] = Seq(
-    libraryDependencies += "net.sf.proguard" % "proguard-base" % (proguardVersion in Proguard).value % Proguard
-  )
+  def dependencies: Seq[Setting[_]] =
+    Seq(
+      libraryDependencies += "net.sf.proguard" % "proguard-base" % (proguardVersion in Proguard).value % Proguard
+    )
 
   lazy val mergeTask: Def.Initialize[Task[Seq[ProguardOptions.Filtered]]] = Def.task {
     val streamsValue = streams.value
