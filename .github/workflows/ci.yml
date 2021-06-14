@@ -27,4 +27,12 @@ jobs:
       with:
         java-version: "adopt@1.${{ matrix.java }}"
     - uses: coursier/cache-action@v6
+    - run: |
+        case ${{ matrix.os }} in
+          "ubuntu-latest")
+            sbt -v scalafmtSbtCheck scalafmtCheckAll
+            ;;
+          *)
+            echo "skip scalafmt"
+        esac
     - run: sbt -v $(if [[ "${{matrix.sbt_version}}" != "" ]] ; then echo "^^${{matrix.sbt_version}}" ; fi) test scripted
