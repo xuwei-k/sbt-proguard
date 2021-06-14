@@ -1,9 +1,9 @@
 package sbtproguard
 
 import sbtproguard.proguard.Merge
-import sbtproguard.proguard.Sbt10Compat._
+import sbt._
 import sbt.Keys._
-import sbt.{Def, _}
+import sbt.internal.inc.Analysis
 
 import scala.sys.process.Process
 
@@ -23,13 +23,21 @@ object SbtProguard extends AutoPlugin {
 
   def baseSettings: Seq[Setting[_]] =
     Seq(
-      proguardVersion := "6.2.0",
+      proguardVersion := "6.2.2",
       proguardDirectory := crossTarget.value / "proguard",
       proguardConfiguration := proguardDirectory.value / "configuration.pro",
-      artifactPath := proguardDirectory.value / (artifactPath in packageBin in Compile).value.getName,
+      artifactPath := proguardDirectory.value / (Compile / packageBin / artifactPath).value.getName,
       managedClasspath := Classpaths.managedJars(configuration.value, classpathTypes.value, update.value),
-      proguardBinaryDeps := getAllBinaryDeps.value,
-      proguardInputs := (fullClasspath in Runtime).value.files,
+      proguardBinaryDeps := {
+        val converter = fileConverter.value
+        (Compile / compile).value match {
+          case analysis: Analysis =>
+            // TODO more better way
+            val javaRuntime = sys.props.get("java.home").map(home => file(home) / "lib/rt.jar").filter(_.isFile).toList
+            javaRuntime ++ analysis.relations.allLibraryDeps.map(x => converter.toPath(x).toFile).toSeq
+        }
+      },
+      proguardInputs := (Runtime / fullClasspath).value.files,
       proguardLibraries := proguardBinaryDeps.value filterNot proguardInputs.value.toSet,
       proguardOutputs := Seq(artifactPath.value),
       proguardDefaultInputFilter := Some("!META-INF/MANIFEST.MF"),
@@ -51,13 +59,13 @@ object SbtProguard extends AutoPlugin {
           jarOptions("-libraryjars", proguardFilteredLibraries.value) ++
           jarOptions("-outjars", proguardFilteredOutputs.value)
       },
-      javaOptions in proguard := Seq("-Xmx256M"),
+      proguard / javaOptions := Seq("-Xmx256M"),
       autoImport.proguard := proguardTask.value
     )
 
   def dependencies: Seq[Setting[_]] =
     Seq(
-      libraryDependencies += "net.sf.proguard" % "proguard-base" % (proguardVersion in Proguard).value % Proguard
+      libraryDependencies += "net.sf.proguard" % "proguard-base" % (Proguard / proguardVersion).value % Proguard
     )
 
   lazy val mergeTask: Def.Initialize[Task[Seq[ProguardOptions.Filtered]]] = Def.task {
@@ -84,7 +92,7 @@ object SbtProguard extends AutoPlugin {
   lazy val proguardTask: Def.Initialize[Task[Seq[File]]] = Def.task {
     writeConfiguration(proguardConfiguration.value, proguardOptions.value)
     val proguardConfigurationValue = proguardConfiguration.value
-    val javaOptionsInProguardValue = (javaOptions in proguard).value
+    val javaOptionsInProguardValue = (proguard / javaOptions).value
     val managedClasspathValue = managedClasspath.value
     val streamsValue = streams.value
     val outputsValue = proguardOutputs.value

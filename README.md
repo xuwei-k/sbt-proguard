@@ -25,9 +25,9 @@ A simple `build.sbt` with settings to configure sbt-proguard:
 ```scala
 enablePlugins(SbtProguard)
 
-proguardOptions in Proguard ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings")
+ProGuard / proguardOptions ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings")
 
-proguardOptions in Proguard += ProguardOptions.keepMain("some.MainClass")
+ProGuard / proguardOptions += ProguardOptions.keepMain("some.MainClass")
 ```
 
 Run proguard at the sbt shell with:
@@ -47,7 +47,7 @@ files.
 For example, to add a `!META-INF/**` filter to just the scala-library jar:
 
 ```scala
-proguardInputFilter in Proguard := { file =>
+Proguard / proguardInputFilter := { file =>
   file.name match {
     case "scala-library.jar" => Some("!META-INF/**")
     case _                   => None
@@ -80,7 +80,7 @@ The sbt-proguard plugin supports pre-merging inputs, similar to creating an
 assembly jar first. To enable this merging use:
 
 ```scala
-proguardMerge in Proguard := true
+Proguard / proguardMerge := true
 ```
 
 Conflicting paths that are not identical will now fail at the merge stage. These
@@ -103,25 +103,25 @@ The default strategy is to only discard `META-INF/MANIFEST.MF`. This same
 strategy could be added with:
 
 ```scala
-proguardMergeStrategies in Proguard += ProguardMerge.discard("META-INF/MANIFEST.MF")
+Proguard / proguardMergeStrategies += ProguardMerge.discard("META-INF/MANIFEST.MF")
 ```
 
 Or all `META-INF` contents could be discarded with a regular expression:
 
 ```scala
-proguardMergeStrategies in Proguard += ProguardMerge.discard("META-INF/.*".r)
+Proguard / proguardMergeStrategies += ProguardMerge.discard("META-INF/.*".r)
 ```
 
 To concatenate all `reference.conf` files together use:
 
 ```scala
-proguardMergeStrategies in Proguard += ProguardMerge.append("reference.conf")
+Proguard / proguardMergeStrategies += ProguardMerge.append("reference.conf")
 ```
 
 To discard all `.html` and `.txt` files you may use two strategies together:
 
 ```scala
-proguardMergeStrategies in Proguard ++= Seq(
+Proguard / proguardMergeStrategies ++= Seq(
   ProguardMerge.discard("\\.html$".r),
   ProguardMerge.discard("\\.txt$".r) 
 )
