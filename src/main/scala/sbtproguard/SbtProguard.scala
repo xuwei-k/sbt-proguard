@@ -32,7 +32,6 @@ object SbtProguard extends AutoPlugin {
         val converter = fileConverter.value
         (Compile / compile).value match {
           case analysis: Analysis =>
-            // TODO more better way
             val javaRuntime = sys.props.get("java.home").map(home => file(home) / "lib/rt.jar").filter(_.isFile).toList
             javaRuntime ++ analysis.relations.allLibraryDeps.map(x => converter.toPath(x).toFile).toSeq
         }
@@ -49,6 +48,19 @@ object SbtProguard extends AutoPlugin {
       proguardOutputFilter := { f => None },
       proguardFilteredInputs := filtered(proguardInputs.value, proguardInputFilter.value),
       proguardFilteredLibraries := filtered(proguardLibraries.value, proguardLibraryFilter.value),
+      proguardFilteredLibraries ++= {
+        // if new jdk
+        // https://github.com/Guardsquare/proguard/blob/e8e749ce33076f5219a/docs/md/manual/configuration/examples.md#processing-different-types-of-applications--applicationtypes
+        ProguardOptions.noFilter(
+          sys.props
+            .get("java.home")
+            .map { home =>
+              file(home) / "jmods/java.base.jmod"
+            }
+            .filter(_.isFile)
+            .toList
+        )
+      },
       proguardFilteredOutputs := filtered(proguardOutputs.value, proguardOutputFilter.value),
       proguardMerge := false,
       proguardMergeDirectory := proguardDirectory.value / "merged",
