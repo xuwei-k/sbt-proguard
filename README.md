@@ -1,7 +1,7 @@
 sbt-proguard
 ============
 
-[sbt] plugin for running [ProGuard]. This plugin requires sbt 0.13 or 1.x.
+[sbt] plugin for running [ProGuard]. This plugin requires sbt 1.4.x or later.
 
 
 Add plugin
