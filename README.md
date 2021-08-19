@@ -25,9 +25,9 @@ A simple `build.sbt` with settings to configure sbt-proguard:
 ```scala
 enablePlugins(SbtProguard)
 
-ProGuard / proguardOptions ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings")
+Proguard / proguardOptions ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings")
 
-ProGuard / proguardOptions += ProguardOptions.keepMain("some.MainClass")
+Proguard / proguardOptions += ProguardOptions.keepMain("some.MainClass")
 ```
 
 Run proguard at the sbt shell with:
