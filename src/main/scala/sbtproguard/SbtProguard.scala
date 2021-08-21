@@ -23,7 +23,7 @@ object SbtProguard extends AutoPlugin {
 
   def baseSettings: Seq[Setting[_]] =
     Seq(
-      proguardVersion := "7.0.1",
+      proguardVersion := SbtProGuardBuildInfo.defaultProGuardVersion,
       proguardDirectory := crossTarget.value / "proguard",
       proguardConfiguration := proguardDirectory.value / "configuration.pro",
       artifactPath := proguardDirectory.value / (Compile / packageBin / artifactPath).value.getName,

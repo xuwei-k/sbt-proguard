@@ -1,6 +1,42 @@
 organization := "com.github.xuwei-k"
 name := "sbt-proguard"
 
+// for scala-steward
+val proguardBase = "com.guardsquare" % "proguard-base" % "7.0.1" % "runtime"
+libraryDependencies += proguardBase
+
+Compile / sourceGenerators += task {
+  val source = s"""package sbtproguard
+    |
+    |private[sbtproguard] object SbtProGuardBuildInfo {
+    |  def defaultProGuardVersion: String = "${proguardBase.revision}"
+    |}
+    |""".stripMargin
+  val f = (Compile / sourceManaged).value / "sbtproguard" / "SbtProGuardBuildInfo.scala"
+  IO.write(f, source)
+  Seq(f)
+}
+
+pomPostProcess := { node =>
+  import scala.xml.{NodeSeq, Node}
+  val rule = new scala.xml.transform.RewriteRule {
+    override def transform(n: Node) = {
+      if (
+        List(
+          n.label == "dependency",
+          (n \ "groupId").text == proguardBase.organization,
+          (n \ "artifactId").text == proguardBase.name,
+        ).forall(identity)
+      ) {
+        NodeSeq.Empty
+      } else {
+        n
+      }
+    }
+  }
+  new scala.xml.transform.RuleTransformer(rule).transform(node)(0)
+}
+
 homepage := Some(url("https://github.com/xuwei-k/sbt-proguard"))
 licenses := Seq("APL2" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 scmInfo := Some(
