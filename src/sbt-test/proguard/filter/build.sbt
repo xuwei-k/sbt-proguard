@@ -9,6 +9,6 @@ Proguard / proguardOptions += ProguardOptions.keepMain("Test")
 Proguard / proguardInputFilter := { file =>
   file.name match {
     case "scala-library.jar" => Some("!META-INF/**")
-    case _                   => None
+    case _ => None
   }
 }
