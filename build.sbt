@@ -2,7 +2,7 @@ organization := "com.github.xuwei-k"
 name := "sbt-proguard"
 
 // for scala-steward
-val proguardBase = "com.guardsquare" % "proguard-base" % "7.2.0-beta6" % "runtime"
+val proguardBase = "com.guardsquare" % "proguard-base" % "7.2.0" % "runtime"
 libraryDependencies += proguardBase
 
 Compile / sourceGenerators += task {
