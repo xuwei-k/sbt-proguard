@@ -77,3 +77,5 @@ releaseProcess := Seq[ReleaseStep](
   commitNextVersion,
   pushChanges
 )
+
+sbtPluginPublishLegacyMavenStyle := false
