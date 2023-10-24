@@ -37,6 +37,16 @@ pomPostProcess := { node =>
   new scala.xml.transform.RuleTransformer(rule).transform(node)(0)
 }
 
+packagedArtifacts := {
+  val value = packagedArtifacts.value
+  val pomFiles = value.values.filter(_.getName.endsWith(".pom")).toList
+  assert(pomFiles.size == 2, pomFiles.map(_.getName))
+  pomFiles.foreach { f =>
+    assert(!IO.read(f).contains("proguard-base"))
+  }
+  value
+}
+
 homepage := Some(url("https://github.com/xuwei-k/sbt-proguard"))
 licenses := Seq("APL2" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 scmInfo := Some(
